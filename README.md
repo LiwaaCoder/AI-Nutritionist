@@ -1,8 +1,8 @@
 <div align="center">
 
-![Noga AI Hero](assets/hero.png)
+![NutriAi Hero](assets/hero.png)
 
-# 🥗 Hebrew AI Nutritionist Bot (Noga)
+# 🥗 Hebrew AI Nutritionist Bot (NutriAi)
 
 **Your Personal AI Nutritionist & Fitness Coach on Telegram**
 
@@ -18,17 +18,17 @@
 
 ## 🌟 Overview
 
-**Noga (AI Nutritionist)** is an advanced Telegram bot designed to help Hebrew speakers track their nutrition, achieve fitness goals, and maintain a healthy lifestyle. Unlike simple calorie counters, Noga uses **Google Gemini AI** to "see" your food, understand your natural language, and provide personalized, empathetic feedback like a real coach.
+**NutriAi** is an advanced Telegram bot designed to help Hebrew speakers track their nutrition, achieve fitness goals, and maintain a healthy lifestyle. Unlike simple calorie counters, NutriAi uses **Google Gemini AI** to "see" your food, understand your natural language, and provide personalized, empathetic feedback like a real coach.
 
 ![App Mockup](assets/mockup.png)
 
 ## ✨ Key Features
 
 -   **📸 Visual Food Analysis**: Simply send a photo of your meal! The AI identifies ingredients, estimates portions, and logs calories/macros automatically.
--   **💬 Natural Hebrew Conversation**: Chat with Noga naturally. Tell her "I ate a shawarma in a laffa" or "I'm feeling tired today", and she'll understand the context.
+-   **💬 Natural Hebrew Conversation**: Chat with NutriAi naturally. Tell her "I ate a shawarma in a laffa" or "I'm feeling tired today", and she'll understand the context.
 -   **🚀 Smart Onboarding**: New users are guided through a friendly setup process to calculate their BMR and daily goals based on age, weight, height, and activity level.
 -   **📊 Visual Progress Tracking**: Get beautiful summaries with progress bars for Calories, Protein, Carbs, and Fats after every meal.
--   **🧠 Empathetic Coaching**: Noga has a personality! She encourages you, gently warns you about limits, and celebrates your wins.
+-   **🧠 Empathetic Coaching**: NutriAi has a personality! She encourages you, gently warns you about limits, and celebrates your wins.
 -   **💾 Persistent Memory**: Remembers your history, stats, and preferences using a local SQLite database.
 
 ## 🛠️ Tech Stack
@@ -79,7 +79,7 @@
 
 1.  Open your bot in Telegram.
 2.  Send any message to start.
-3.  **Onboarding:** If it's your first time, Noga will ask for your details (Age, Weight, etc.).
+3.  **Onboarding:** If it's your first time, NutriAi will ask for your details (Age, Weight, etc.).
 4.  **Logging Food:** Just send a picture of your food or type "I ate an apple".
 5.  **Check Status:** Ask "How much protein do I have left?" or "What did I eat today?".
 
