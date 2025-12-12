@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  nutrition-bot:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: nutrition-bot
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      - PORT=3000
+    volumes:
+      # Persist SQLite database and map source code for dev
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - nutrition-network
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    command: start --tunnel
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - NODE_ENV=production
+      ## - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=Asia/Jerusalem # Set relevant timezone
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - nutrition-network
+
+networks:
+  nutrition-network:
+    driver: bridge
+
+volumes:
+  n8n_data:

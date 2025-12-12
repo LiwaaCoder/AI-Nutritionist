@@ -1,0 +1,5 @@
+{
+  "name": "Hebrew AI Nutritionist",
+  "description": "A WhatsApp-style AI nutritionist demo that logs food via text or image, tracks macros against goals, and communicates entirely in Hebrew using Gemini 2.5 Flash.",
+  "requestFramePermissions": []
+}

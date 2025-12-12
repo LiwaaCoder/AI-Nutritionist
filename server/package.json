@@ -1,0 +1,27 @@
+{
+    "name": "nutrition-agent-backend",
+    "version": "1.0.0",
+    "type": "commonjs",
+    "description": "Backend API for Hebrew AI Nutritionist (n8n compatible)",
+    "main": "server.ts",
+    "scripts": {
+        "start": "ts-node server.ts",
+        "dev": "nodemon server.ts"
+    },
+    "dependencies": {
+        "@google/genai": "^1.32.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "sqlite3": "^5.1.7"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "@types/node": "^20.12.7",
+        "@types/sqlite3": "^3.1.11",
+        "nodemon": "^3.1.0",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.4.5"
+    }
+}
