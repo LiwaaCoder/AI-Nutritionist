@@ -1,0 +1,214 @@
+{
+    "name": "AI Nutritionist Code V7 (Manual Base64)",
+    "nodes": [
+        {
+            "parameters": {
+                "updates": [
+                    "message",
+                    "*"
+                ],
+                "additionalFields": {
+                    "download": true
+                }
+            },
+            "id": "6aff98b0-48e9-4337-98af-871e3d44a9e0",
+            "name": "Telegram Trigger",
+            "type": "n8n-nodes-base.telegramTrigger",
+            "typeVersion": 1,
+            "position": [
+                -352,
+                0
+            ],
+            "webhookId": "bot-v3",
+            "credentials": {
+                "telegramApi": {
+                    "id": "2Fw9wKRw4J0cicqr",
+                    "name": "Telegram account 2"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "boolean": [
+                        {
+                            "value1": "={{ $binary.data !== undefined }}",
+                            "value2": true
+                        }
+                    ]
+                }
+            },
+            "id": "bee95cb9-8c6c-485b-97e1-fa994b1513ae",
+            "name": "Is there an Image?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                -128,
+                0
+            ]
+        },
+        {
+            "parameters": {
+                "jsCode": "// Prepare Image Data Manually\n// This bypasses n8n's expression limitations\n\nconst item = items[0];\nlet imageInfo = \"Assuming NO Image\";\nlet finalImage = \"\";\n\nif (item.binary && item.binary.data) {\n  const bData = item.binary.data;\n  // Check if data key exists (base64 string)\n  if (bData.data) {\n     imageInfo = \"Image Found & Processed\";\n     finalImage = `data:${bData.mimeType};base64,${bData.data}`;\n  } else {\n     imageInfo = \"Binary Metadata Found but Data Empty\";\n     finalImage = \"\";\n  }\n} else {\n  imageInfo = \"No Binary Object\";\n}\n\nitem.json.imageInfo = imageInfo;\nitem.json.finalImage = finalImage;\n\nreturn items;"
+            },
+            "id": "custom-code-node-1",
+            "name": "Process Image Code",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                128,
+                -128
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "http://nutrition-bot:3000/api/chat",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "userId",
+                            "value": "={{ $json.message.from.id.toString() }}"
+                        },
+                        {
+                            "name": "message",
+                            "value": "={{ ($json.message.caption || $json.message.text || \"\") + \" [V7 DEBUG: \" + $json.imageInfo + \" | Len=\" + $json.finalImage.length + \"]\" }}"
+                        },
+                        {
+                            "name": "image",
+                            "value": "={{ $json.finalImage }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "6c293d50-a924-41d3-9fce-51f9c3fb4f6b",
+            "name": "Call AI Agent (With Image)",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                352,
+                -128
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "http://nutrition-bot:3000/api/chat",
+                "sendBody": true,
+                "bodyParameters": {
+                    "parameters": [
+                        {
+                            "name": "userId",
+                            "value": "={{ $json.message.from.id.toString() }}"
+                        },
+                        {
+                            "name": "message",
+                            "value": "={{ $json.message.text }}"
+                        }
+                    ]
+                },
+                "options": {}
+            },
+            "id": "2613e4e1-cc23-4b2d-a8fc-234e4aab5375",
+            "name": "Call AI Agent (Text Only)",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                128,
+                160
+            ]
+        },
+        {
+            "parameters": {
+                "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+                "text": "={{ $json.reply }}",
+                "additionalFields": {}
+            },
+            "id": "50dd3dd5-44f9-43e0-86be-48bb71a0bd13",
+            "name": "Respond to Telegram",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1,
+            "position": [
+                608,
+                32
+            ],
+            "webhookId": "7df4ab59-2896-45cd-aad7-cf745b970aa9",
+            "credentials": {
+                "telegramApi": {
+                    "id": "2Fw9wKRw4J0cicqr",
+                    "name": "Telegram account 2"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Telegram Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Is there an Image?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Is there an Image?": {
+            "main": [
+                [
+                    {
+                        "node": "Process Image Code",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Call AI Agent (Text Only)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Process Image Code": {
+            "main": [
+                [
+                    {
+                        "node": "Call AI Agent (With Image)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Call AI Agent (With Image)": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Telegram",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Call AI Agent (Text Only)": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Telegram",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "pinData": {},
+    "meta": {
+        "instanceId": "cdc1ea08a9e13415fea42bf9dfdb3a1c127337a619a97d59b80720cf5eea4ef6"
+    }
+}
