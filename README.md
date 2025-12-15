@@ -2,7 +2,7 @@
 
 ![NutriAi Hero](assets/hero.png)
 
-# 🥗 Hebrew AI Nutritionist Bot (NutriAi)
+# 🥗  AI Nutritionist Bot (NutriAi)
 
 **Your Personal AI Nutritionist & Fitness Coach on Telegram**
 
